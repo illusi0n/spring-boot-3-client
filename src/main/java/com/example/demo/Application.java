@@ -1,7 +1,5 @@
 package com.example.demo;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.aop.Advisor;
 import org.springframework.aop.SpringProxy;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aot.hint.RuntimeHints;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.support.WebClientAdapter;
 import org.springframework.web.service.annotation.GetExchange;
-import org.springframework.web.service.invoker.HttpClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @SpringBootApplication
@@ -34,7 +31,7 @@ public class Application {
     @Bean
     ApplicationListener<ApplicationReadyEvent> ready(UsersClient usersClient) {
         return event -> {
-            var user = usersClient.findByUsername("Natasha");
+            var user = usersClient.findByFirstName("Natasha");
             System.out.println(user);
         };
     }
@@ -72,6 +69,6 @@ public class Application {
 
     interface UsersClient {
         @GetExchange("/users")
-        User findByUsername(@RequestParam("firstName") String firstName);
+        User findByFirstName(@RequestParam("firstName") String firstName);
     }
 }
